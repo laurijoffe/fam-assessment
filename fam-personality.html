@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fulton Asset Management — Leadership Assessment</title>
+<style>
+:root {
+  --navy: #0F1E3C;
+  --navy-mid: #1A3262;
+  --navy-light: #243F7A;
+  --gold: #C4A35A;
+  --gold-dim: rgba(196,163,90,0.25);
+  --white: #FFFFFF;
+  --bg: #F5F6F9;
+  --slate: #5E6C84;
+  --slate-light: #8B97AC;
+  --slate-border: #DDE3ED;
+  --text: #151E30;
+  --text-light: #4A5568;
+  --shadow-sm: 0 1px 4px rgba(15,30,60,0.08);
+  --shadow-md: 0 6px 20px rgba(15,30,60,0.11);
+  --shadow-lg: 0 16px 48px rgba(15,30,60,0.15);
+  --radius: 6px;
+  --green-bg: #163829;
+  --red-bg: #5C1A1A;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+#app-header{position:fixed;top:0;left:0;right:0;background:var(--navy);z-index:100;}
+#app-header.hidden{display:none;}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:54px;max-width:860px;margin:0 auto;}
+.header-brand{display:flex;align-items:center;gap:12px;}
+.header-monogram{font-size:15px;font-weight:800;color:var(--gold);letter-spacing:0.04em;}
+.header-name{font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.6);}
+.header-sep{width:1px;height:18px;background:rgba(255,255,255,0.15);}
+#module-indicator{font-size:12px;color:var(--slate-light);letter-spacing:0.04em;}
+.header-rule{height:1px;background:linear-gradient(90deg,var(--gold) 0%,transparent 60%);opacity:0.35;}
+#main{min-height:100vh;}
+#main.has-header{padding-top:55px;}
+.screen{display:none;}
+.screen.active{display:block;}
+#screen-entry.active,#screen-thankyou.active{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:40px 24px;}
+.entry-card{background:var(--white);border-radius:10px;box-shadow:var(--shadow-lg);border:1px solid var(--slate-border);padding:56px 48px;width:100%;max-width:520px;}
+.entry-eyebrow{font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--slate);margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.entry-eyebrow::before{content:'';display:block;width:20px;height:1px;background:var(--gold);flex-shrink:0;}
+.entry-title{font-family:Georgia,'Times New Roman',serif;font-size:32px;font-weight:400;color:var(--navy);margin-bottom:28px;line-height:1.2;}
+.entry-framing{font-size:14px;color:var(--text-light);line-height:1.8;border-left:2px solid var(--gold);padding-left:16px;margin-bottom:36px;}
+.form-group{margin-bottom:20px;}
+.form-label{display:block;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--slate);margin-bottom:8px;}
+.form-input{width:100%;padding:12px 16px;border:1px solid var(--slate-border);border-radius:var(--radius);font-size:15px;font-family:inherit;color:var(--text);background:var(--white);transition:border-color 0.15s,box-shadow 0.15s;outline:none;}
+.form-input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(15,30,60,0.08);}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 28px;border-radius:var(--radius);font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;border:none;transition:all 0.15s;letter-spacing:0.07em;text-transform:uppercase;}
+.btn-primary{background:var(--navy);color:var(--white);}
+.btn-primary:hover:not(:disabled){background:var(--navy-mid);}
+.btn-primary:disabled{opacity:0.38;cursor:not-allowed;}
+.btn-full{width:100%;}
+.role-options{display:flex;flex-direction:column;gap:10px;margin-bottom:36px;}
+.role-opt{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;border:1px solid var(--slate-border);border-radius:var(--radius);cursor:pointer;transition:all 0.12s;user-select:none;background:var(--white);}
+.role-opt:hover{border-color:var(--navy);background:#F0F4FA;}
+.role-opt.selected{border-color:var(--navy);background:#ECF0FA;}
+.role-radio{width:18px;height:18px;min-width:18px;border-radius:50%;border:2px solid var(--slate-border);display:flex;align-items:center;justify-content:center;transition:all 0.12s;flex-shrink:0;margin-top:1px;}
+.role-opt.selected .role-radio{border-color:var(--navy);background:var(--navy);}
+.role-opt.selected .role-radio::after{content:'';width:6px;height:6px;border-radius:50%;background:white;}
+.role-label{font-size:14px;color:var(--text);line-height:1.45;}
+.role-sub{font-size:12px;color:var(--slate-light);margin-top:2px;}
+.content-wrap{max-width:720px;margin:0 auto;padding:48px 24px 88px;}
+.mod-intro{max-width:580px;margin:0 auto;padding:72px 24px 48px;}
+.mod-eyebrow{font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.mod-eyebrow::before{content:'';display:block;width:20px;height:1px;background:var(--gold);flex-shrink:0;}
+.mod-title{font-family:Georgia,'Times New Roman',serif;font-size:38px;font-weight:400;color:var(--navy);margin-bottom:20px;line-height:1.15;}
+.mod-desc{font-size:15px;color:var(--text-light);line-height:1.8;margin-bottom:36px;}
+.mod-stats{display:flex;gap:12px;margin-bottom:40px;flex-wrap:wrap;}
+.stat-chip{border:1px solid var(--slate-border);border-radius:4px;padding:10px 20px;font-size:12px;color:var(--text-light);background:var(--white);}
+.stat-chip strong{color:var(--navy);font-size:22px;display:block;font-family:Georgia,serif;font-weight:400;line-height:1.2;}
+.sc-card{background:var(--white);border-radius:8px;box-shadow:var(--shadow-sm);border:1px solid var(--slate-border);padding:40px;}
+.sc-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.sc-badge{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:4px 12px;border-radius:3px;white-space:nowrap;}
+.sc-title{font-family:Georgia,'Times New Roman',serif;font-size:22px;color:var(--navy);font-weight:400;line-height:1.25;}
+.sc-rule{height:1px;background:var(--slate-border);margin-bottom:24px;}
+.sc-framing{font-size:14px;color:var(--text-light);line-height:1.85;margin-bottom:28px;padding:18px 22px;background:var(--bg);border-left:3px solid var(--gold);border-radius:0 4px 4px 0;}
+.sc-prompt{font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px;}
+.sc-note{font-size:12px;color:var(--slate-light);font-style:italic;margin-bottom:18px;}
+.mc-options{display:flex;flex-direction:column;gap:10px;margin-bottom:32px;}
+.mc-opt{display:flex;align-items:flex-start;gap:16px;padding:15px 18px;border:1px solid var(--slate-border);border-radius:var(--radius);cursor:pointer;transition:all 0.12s;user-select:none;background:var(--white);}
+.mc-opt:hover:not(.locked){border-color:var(--navy);background:#F0F4FA;}
+.mc-opt.selected{border-color:var(--navy);background:#ECF0FA;}
+.mc-opt.selected .mc-letter{background:var(--navy);color:var(--white);border-color:var(--navy);}
+.mc-opt.locked{cursor:default;}
+.mc-opt.locked:not(.selected){opacity:0.48;}
+.mc-letter{width:30px;height:30px;min-width:30px;border-radius:50%;border:1px solid var(--slate-border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--slate);transition:all 0.12s;flex-shrink:0;}
+.mc-text{font-size:14px;color:var(--text);line-height:1.55;padding-top:4px;}
+.sc-nav{display:flex;justify-content:flex-end;margin-top:4px;}
+.alloc-q{font-size:15px;color:var(--text);line-height:1.7;margin-bottom:6px;}
+.alloc-note{font-size:13px;color:var(--text-light);margin-bottom:26px;}
+.alloc-items{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.alloc-item{display:flex;align-items:center;gap:16px;padding:14px 18px;border:1px solid var(--slate-border);border-radius:var(--radius);background:var(--white);}
+.alloc-label{flex:1;font-size:14px;color:var(--text);line-height:1.45;}
+.alloc-ctrl{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.alloc-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--slate-border);background:var(--bg);cursor:pointer;font-size:18px;color:var(--slate);display:flex;align-items:center;justify-content:center;transition:all 0.12s;user-select:none;flex-shrink:0;}
+.alloc-btn:hover{border-color:var(--navy);color:var(--navy);background:var(--white);}
+.alloc-val{width:36px;text-align:center;font-size:20px;font-weight:700;color:var(--navy);font-family:Georgia,serif;line-height:1;}
+.alloc-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-radius:var(--radius);margin-bottom:24px;background:var(--navy);color:var(--white);transition:background 0.25s;}
+.alloc-bar.valid{background:var(--green-bg);}
+.alloc-bar.over{background:var(--red-bg);}
+.alloc-bar-label{font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;opacity:0.65;}
+.alloc-bar-num{font-size:24px;font-weight:700;font-family:Georgia,serif;line-height:1;}
+.alloc-bar-sub{font-size:12px;opacity:0.55;margin-left:4px;}
+.pairs-header{font-size:14px;color:var(--text-light);line-height:1.75;margin-bottom:28px;}
+.pairs-list{display:flex;flex-direction:column;gap:10px;margin-bottom:110px;}
+.pair-item{display:flex;border:1px solid var(--slate-border);border-radius:var(--radius);overflow:hidden;transition:border-color 0.12s;background:var(--white);}
+.pair-item.answered{border-color:var(--navy);}
+.pair-num{width:38px;min-width:38px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--slate-light);border-right:1px solid var(--slate-border);flex-shrink:0;}
+.pair-sides{display:flex;flex:1;}
+.pair-side{flex:1;padding:14px 16px;cursor:pointer;transition:all 0.12s;user-select:none;}
+.pair-side:first-child{border-right:1px solid var(--slate-border);}
+.pair-side:hover{background:#F0F4FA;}
+.pair-side.selected{background:#ECF0FA;}
+.pair-side-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--slate-light);margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.pair-side.selected .pair-side-lbl{color:var(--navy);}
+.pair-check{width:14px;height:14px;border-radius:50%;background:var(--navy);display:none;align-items:center;justify-content:center;flex-shrink:0;}
+.pair-side.selected .pair-check{display:flex;}
+.pair-check::after{content:'';width:5px;height:3px;border-left:1.5px solid white;border-bottom:1.5px solid white;transform:rotate(-45deg) translateY(-1px);}
+.pair-text{font-size:13px;color:var(--text-light);line-height:1.5;}
+.pair-side.selected .pair-text{color:var(--text);}
+.m1-continue-wrap{display:flex;justify-content:flex-end;margin-top:32px;}
+#pairs-footer{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--slate-border);z-index:50;box-shadow:0 -4px 20px rgba(15,30,60,0.09);}
+#pairs-footer.hidden{display:none;}
+.pairs-foot-inner{max-width:720px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.pairs-prog{font-size:14px;color:var(--text-light);}
+.pairs-prog strong{color:var(--navy);}
+#pairs-hint{font-size:12px;color:var(--slate-light);}
+.ty-check{width:52px;height:52px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;}
+.ty-check::after{content:'';width:20px;height:12px;border-left:2.5px solid white;border-bottom:2.5px solid white;transform:rotate(-45deg) translateY(-3px);}
+.ty-title{font-family:Georgia,'Times New Roman',serif;font-size:28px;color:var(--navy);font-weight:400;margin:12px 0 16px;}
+.ty-body{font-size:14px;color:var(--text-light);line-height:1.8;}
+.hidden{display:none!important;}
+@media(max-width:600px){
+  .entry-card{padding:40px 28px;}
+  .sc-card{padding:28px 20px;}
+  .header-inner{padding:0 20px;}
+  .mod-title{font-size:30px;}
+  .pair-sides{flex-direction:column;}
+  .pair-side:first-child{border-right:none;border-bottom:1px solid var(--slate-border);}
+  .alloc-item{flex-wrap:wrap;}
+  .alloc-label{flex-basis:100%;}
+}
+</style>
+</head>
+<body>
+
+<div id="app-header" class="hidden">
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="header-monogram">FAM</div>
+      <div class="header-sep"></div>
+      <div class="header-name">Leadership Assessment</div>
+    </div>
+    <span id="module-indicator"></span>
+  </div>
+  <div class="header-rule"></div>
+</div>
+
+<div id="main">
+
+<div id="screen-entry" class="screen active">
+  <div class="entry-card">
+    <div class="entry-eyebrow">Fulton Asset Management</div>
+    <div class="entry-title">Leadership<br>Assessment</div>
+    <div class="entry-framing">This assessment is designed to surface how you actually think, decide, and lead — not how a leader should behave. There are no correct answers. Please respond as honestly as possible.</div>
+    <div class="form-group">
+      <label class="form-label" for="p-name">Full Name</label>
+      <input class="form-input" type="text" id="p-name" placeholder="Your full name" autocomplete="off">
+    </div>
+    <div class="form-group" style="margin-bottom:24px;">
+      <label class="form-label" for="p-org">Organization</label>
+      <input class="form-input" type="text" id="p-org" placeholder="Company or entity" autocomplete="off">
+    </div>
+    <div class="form-group" style="margin-bottom:8px;">
+      <label class="form-label">My primary leadership context</label>
+    </div>
+    <div class="role-options" id="role-options">
+      <div class="role-opt" data-role="leader">
+        <div class="role-radio"></div>
+        <div><div class="role-label">I lead a team or function within a larger organization</div><div class="role-sub">Director, VP, functional head, department lead</div></div>
+      </div>
+      <div class="role-opt" data-role="ceo">
+        <div class="role-radio"></div>
+        <div><div class="role-label">I run a company or business unit</div><div class="role-sub">CEO, President, GM, Managing Director</div></div>
+      </div>
+      <div class="role-opt" data-role="board">
+        <div class="role-radio"></div>
+        <div><div class="role-label">I serve in a board or advisory capacity</div><div class="role-sub">Board member, advisor, investor representative</div></div>
+      </div>
+      <div class="role-opt" data-role="ic">
+        <div class="role-radio"></div>
+        <div><div class="role-label">I am an individual contributor or specialist</div><div class="role-sub">No direct reports — expert or project-based role</div></div>
+      </div>
+    </div>
+    <button class="btn btn-primary btn-full" id="begin-btn" disabled>Begin Assessment</button>
+  </div>
+</div>
+
+<!-- MODULE 1: ENERGY & STYLE -->
+<div id="screen-module1" class="screen">
+  <div class="content-wrap">
+    <div id="m1-intro" class="mod-intro">
+      <div class="mod-eyebrow">Module 1 of 4</div>
+      <div class="mod-title">Energy<br>&amp; Style</div>
+      <p class="mod-desc">Ten pairs of statements about how you naturally operate. Select the one that feels more accurate — not how you think you should operate. There are no correct answers.</p>
+      <div class="mod-stats">
+        <div class="stat-chip"><strong>10</strong>Pairs</div>
+        <div class="stat-chip"><strong>~5</strong>minutes</div>
+      </div>
+      <button class="btn btn-primary" id="begin-m1-btn">Begin Module 1</button>
+    </div>
+    <div id="m1-pairs-wrap" class="hidden">
+      <p class="pairs-header">Select the statement that more accurately describes how you naturally operate.</p>
+      <div class="pairs-list" id="m1-pairs-list"></div>
+      <div class="m1-continue-wrap">
+        <button class="btn btn-primary" id="m1-continue-btn" disabled>Continue to Module 2</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODULE 2: SITUATIONAL DILEMMAS -->
+<div id="screen-module2" class="screen">
+  <div class="content-wrap">
+    <div id="m2-intro" class="mod-intro">
+      <div class="mod-eyebrow">Module 2 of 4</div>
+      <div class="mod-title">Situational<br>Dilemmas</div>
+      <p class="mod-desc">Eight workplace scenarios. For each, select the response closest to what you would actually do. There are no right answers.</p>
+      <div class="mod-stats">
+        <div class="stat-chip"><strong>8</strong>Scenarios</div>
+        <div class="stat-chip"><strong>~12</strong>minutes</div>
+      </div>
+      <button class="btn btn-primary" id="begin-m2-btn">Begin Module 2</button>
+    </div>
+    <div id="m2-scenarios" class="hidden">
+
+      <div id="m2s1" class="sc-card hidden">
+        <div class="sc-eyebrow"><div class="sc-badge">Scenario 1 of 8</div><div class="sc-title">The Misaligned Decision</div></div>
+        <div class="sc-rule"></div>
+        <div class="sc-framing">Your CEO has just committed the company to a new direction in a meeting with a major client — without consulting you. You believe the direction is wrong and will create significant operational problems. The CEO is enthusiastic and the client is excited. You have 24 hours before the commitment is formalized.</div>
+        <div class="sc-prompt">Which response is closest to what you would actually do?</div>
+        <div class="sc-note">There is no correct answer.</div>
+        <div class="mc-options" id="m2s1-opts">
+          <div class="mc-opt" data-s="1" data-c="A"><div class="mc-letter">A</div><div class="mc-text">Pull the CEO aside immediately and lay out your concerns directly, even if it creates friction</div></div>
+          <div class="mc-opt" data-s="1" data-c="B"><div class="mc-letter">B</div><div class="mc-text">Let it play out for now — you might be missing context — and raise concerns privately once you've thought it through</div></div>
+          <div class="mc-opt" data-s="1" data-c="C"><div class="mc-letter">C</div><div class="mc-text">Start building the implementation plan while simultaneously documenting your reservations in writing to ownership</div></div>
+          <div class="mc-opt" data-s="1" data-c="D"><div class="mc-letter">D</div><div class="mc-text">Request a meeting with the CEO and the client together to surface the issues before anything is finalized</div></div>
+        </div>
+        <div class="sc-nav"><button class="btn btn-primary" id="m2s1-next" disabled>Next Scenario</button></div>
+      </div>
+
+      <div id="m2s2" class="sc-card hidden">
+        <div class="sc-eyebrow"><div class="sc-badge">Scenario 2 of 8</div><div class="sc-title">The Underperformer You Inherited</div></div>
+        <div class="sc-rule"></div>
+        <div class="sc-framing">You have inherited a long-tenured team member who is universally liked but consistently underdelivering. Everyone knows it. The previous leader never addressed it. The person is not malicious — they are simply in the wrong role or past their peak. You have been in the role for 90 days.</div>
+        <div class="sc-prompt">Which response is closest to what you would actually do?</div>
+        <div class="sc-note">There is no correct answer.</div>
+        <div class="mc-options" id="m2s2-opts">
+          <div class="mc-opt" data-s="2" data-c="A"><div class="mc-letter">A</div><div class="mc-text">Have a direct performance conversation now — lay out expectations and a 60-day improvement plan</div></div>
+          <div class="mc-opt" data-s="2" data-c="B"><div class="mc-letter">B</div><div class="mc-text">Spend another 30 days building relationship and gathering data before taking any action</div></div>
+          <div class="mc-opt" data-s="2" data-c="C"><div class="mc-letter">C</div><div class="mc-text">Restructure the role to better fit what they can actually do, and have a conversation about the new scope</div></div>
+          <div class="mc-opt" data-s="2" data-c="D"><div class="mc-letter">D</div><div class="mc-text">Begin a quiet process of managing them out — the pattern is too established to change</div></div>
+        </div>
+        <div class="sc-nav"><button class="btn btn-primary" id="m2s2-next" disabled>Next Scenario</button></div>
+      </div>
+
+      <div id="m2s3" class="sc-card hidden">
+        <div class="sc-eyebrow"><div class="sc-badge">Scenario 3 of 8</div><div class="sc-title">The Unrealistic Deadline</div></div>
+        <div class="sc-rule"></div>
+        <div class="sc-framing">Ownership has set a deadline for a major deliverable that your team cannot meet at the quality level expected. You have three weeks. Doing it right would take six. You can either cut scope, cut quality, push back on the deadline, or find a way to resource up fast.</div>
+        <div class="sc-prompt">Which response is closest to what you would actually do?</div>
+        <div class="sc-note">There is no correct answer.</div>
+        <div class="mc-options" id="m2s3-opts">
+          <div class="mc-opt" data-s="3" data-c="A"><div class="mc-letter">A</div><div class="mc-text">Push back on ownership directly — explain what's actually achievable and propose a revised timeline</div></div>
+          <div class="mc-opt" data-s="3" data-c="B"><div class="mc-letter">B</div><div class="mc-text">Deliver something at the deadline, even if it's not complete — demonstrate responsiveness and fix it in round two</div></div>
+          <div class="mc-opt" data-s="3" data-c="C"><div class="mc-letter">C</div><div class="mc-text">Identify the 60% of the work that delivers 90% of the value and propose that as the deliverable</div></div>
+          <div class="mc-opt" data-s="3" data-c="D"><div class="mc-letter">D</div><div class="mc-text">Find external resources immediately — contractors, consultants — and absorb the cost to hit the date</div></div>
+        </div>
+        <div class="sc-nav"><button class="btn btn-primary" id="m2s3-next" disabled>Next Scenario</button></div>
+      </div>
+
+      <div id="m2s4" class="sc-card hidden">
+        <div class="sc-eyebrow"><div class="sc-badge">Scenario 4 of 8</div><div class="sc-title">The Trust Breach</div></div>
+        <div class="sc-rule"></div>
+        <div class="sc-framing">A senior colleague you respect has shared something with you in confidence about another team member's performance. You later learn that the information was inaccurate — and that your colleague may have shared it to position themselves politically. The affected team member does not know.</div>
+        <div class="sc-prompt">Which response is closest to what you would actually do?</div>
+        <div class="sc-note">There is no correct answer.</div>
+        <div class="mc-options" id="m2s4-opts">
+          <div class="mc-opt" data-s="4" data-c="A"><div class="mc-letter">A</div><div class="mc-text">Confront your colleague directly — make clear that you know the information was wrong and this cannot happen again</div></div>
+          <div class="mc-opt" data-s="4" data-c="B"><div class="mc-letter">B</div><div class="mc-text">Say nothing to either party — organizational politics are a reality and engaging makes it worse</div></div>
+          <div class="mc-opt" data-s="4" data-c="C"><div class="mc-letter">C</div><div class="mc-text">Go to the affected team member privately and let them know there is a narrative about them that isn't accurate</div></div>
+          <div class="mc-opt" data-s="4" data-c="D"><div class="mc-letter">D</div><div class="mc-text">Raise it with leadership — this is the kind of behavior that damages organizational trust at a systemic level</div></div>
+        </div>
+        <div class="sc-nav"><button class="btn btn-primary" id="m2s4-next" disabled>Next Scenario</button></div>
+      </div>
+
+      <div id="m2s5" class="sc-card hidden">
+        <div class="sc-eyebrow"><div class="sc-badge">Scenario 5 of 8</div><div class="sc-title">The Two Paths</div></div>
+        <div class="sc-rule"></div>
+        <div class="sc-framing">You are offered two internal opportunities simultaneously. You must choose one. Path A gives you more autonomy, a bigger scope, and a genuine chance to build something — but higher risk of failure and less organizational support. Path B is high-visibility, well-resourced, and virtually guaranteed to succeed — but you will be executing someone else's vision with limited room to shape it.</div>
+        <div class="sc-prompt">Which response is closest to what you would actually do?</div>
+        <div class="sc-note">There is no correct answer.</div>
+        <div class="mc-options" id="m2s5-opts">
+          <div class="mc-opt" data-s="5" data-c="A"><div class="mc-letter">A</div><div class="mc-text">Path A — the building opportunity, even with the risk</div></div>
+          <div class="mc-opt" data-s="5" data-c="B"><div class="mc-letter">B</div><div class="mc-text">Path B — execution and visibility, done well, is its own form of leadership</div></div>
+          <div class="mc-opt" data-s="5" data-c="C"><div class="mc-letter">C</div><div class="mc-text">Ask for more time to assess both before committing</div></div>
+          <div class="mc-opt" data-s="5" data-c="D"><div class="mc-letter">D</div><div class="mc-text">Negotiate a version of Path A with more resource support before accepting</div></div>
+        </div>
+        <div class="sc-nav"><button class="btn btn-primary" id="m2s5-next" disabled>Next Scenario</button></div>
+      </div>
+
+      <div id="m2s6" class="sc-card hidden">
+        <div class="sc-eyebrow"><div class="sc-badge">Scenario 6 of 8</div><div class="sc-title">The Bad Quarter</div></div>
+        <div class="sc-rule"></div>
+        <div class="sc-framing">Results for the quarter are significantly below plan. Your team executed well — the miss was primarily driven by market conditions outside anyone's control. You are preparing the quarterly update for ownership. Your CEO wants to lead with market context and minimize the performance narrative. You disagree with that framing.</div>
+        <div class="sc-prompt">Which response is closest to what you would actually do?</div>
+        <div class="sc-note">There is no correct answer.</div>
+        <div class="mc-options" id="m2s6-opts">
+          <div class="mc-opt" data-s="6" data-c="A"><div class="mc-letter">A</div><div class="mc-text">Present the data cleanly and lead with performance — ownership can read market context themselves</div></div>
+          <div class="mc-opt" data-s="6" data-c="B"><div class="mc-letter">B</div><div class="mc-text">Lead with market context as the CEO wants, but ensure the performance data is clearly presented and not obscured</div></div>
+          <div class="mc-opt" data-s="6" data-c="C"><div class="mc-letter">C</div><div class="mc-text">Have a direct conversation with the CEO before the meeting — push for a more balanced framing</div></div>
+          <div class="mc-opt" data-s="6" data-c="D"><div class="mc-letter">D</div><div class="mc-text">Let the CEO lead the narrative; add the performance context yourself in the Q&amp;A</div></div>
+        </div>
+        <div class="sc-nav"><button class="btn btn-primary" id="m2s6-next" disabled>Next Scenario</button></div>
+      </div>
+
+      <div id="m2s7" class="sc-card hidden">
+        <div class="sc-eyebrow"><div class="sc-badge">Scenario 7 of 8</div><div class="sc-title">The Competing Colleague</div></div>
+        <div class="sc-rule"></div>
+        <div class="sc-framing">A peer at your level is clearly positioning for the same role you want. They are politically savvy, well-liked, and good at what they do. You believe you are more qualified for the role — but they have more visibility with the decision-maker. You have six months before the decision.</div>
+        <div class="sc-prompt">Which response is closest to what you would actually do?</div>
+        <div class="sc-note">There is no correct answer.</div>
+        <div class="mc-options" id="m2s7-opts">
+          <div class="mc-opt" data-s="7" data-c="A"><div class="mc-letter">A</div><div class="mc-text">Focus entirely on doing exceptional work and trust that results speak for themselves</div></div>
+          <div class="mc-opt" data-s="7" data-c="B"><div class="mc-letter">B</div><div class="mc-text">Invest in building your relationship with the decision-maker — visibility matters as much as performance</div></div>
+          <div class="mc-opt" data-s="7" data-c="C"><div class="mc-letter">C</div><div class="mc-text">Find ways to collaborate with the colleague directly — turn a competitor into an ally</div></div>
+          <div class="mc-opt" data-s="7" data-c="D"><div class="mc-letter">D</div><div class="mc-text">Have an honest conversation with the decision-maker about your interest in the role and your qualifications</div></div>
+        </div>
+        <div class="sc-nav"><button class="btn btn-primary" id="m2s7-next" disabled>Next Scenario</button></div>
+      </div>
+
+      <div id="m2s8" class="sc-card hidden">
+        <div class="sc-eyebrow"><div class="sc-badge">Scenario 8 of 8</div><div class="sc-title">The Inherited Crisis</div></div>
+        <div class="sc-rule"></div>
+        <div class="sc-framing">You are three months into a new leadership role. You have discovered a significant operational problem that predates your arrival — one that ownership is not aware of and that will require significant resources and difficult decisions to fix. Your predecessor may have known about it.</div>
+        <div class="sc-prompt">Which response is closest to what you would actually do?</div>
+        <div class="sc-note">There is no correct answer.</div>
+        <div class="mc-options" id="m2s8-opts">
+          <div class="mc-opt" data-s="8" data-c="A"><div class="mc-letter">A</div><div class="mc-text">Surface it to ownership immediately, even before you have a full picture or a solution</div></div>
+          <div class="mc-opt" data-s="8" data-c="B"><div class="mc-letter">B</div><div class="mc-text">Spend two more weeks fully understanding the problem before bringing it forward</div></div>
+          <div class="mc-opt" data-s="8" data-c="C"><div class="mc-letter">C</div><div class="mc-text">Bring it forward simultaneously with a concrete remediation plan</div></div>
+          <div class="mc-opt" data-s="8" data-c="D"><div class="mc-letter">D</div><div class="mc-text">Fix as much as you can quietly before surfacing it — minimize the blast radius</div></div>
+        </div>
+        <div class="sc-nav"><button class="btn btn-primary" id="m2s8-next" disabled>Submit Module 2</button></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODULE 3: FORCED ALLOCATION -->
+<div id="screen-module3" class="screen">
+  <div class="content-wrap">
+    <div id="m3-intro" class="mod-intro">
+      <div class="mod-eyebrow">Module 3 of 4</div>
+      <div class="mod-title">Forced<br>Allocation</div>
+      <p class="mod-desc">Six rounds. In each round, distribute exactly 10 points across the options based on how each one actually applies to you. You cannot proceed until your allocation totals exactly 10.</p>
+      <div class="mod-stats">
+        <div class="stat-chip"><strong>6</strong>Rounds</div>
+        <div class="stat-chip"><strong>10</strong>points each</div>
+      </div>
+      <button class="btn btn-primary" id="begin-m3-btn">Begin Module 3</button>
+    </div>
+    <div id="m3-rounds" class="hidden">
+
+      <div id="m3r1" class="sc-card hidden">
+        <div class="sc-eyebrow"><div class="sc-badge">Round 1 of 6</div><div class="sc-title">How You Make Decisions</div></div>
+        <div class="sc-rule"></div>
+        <p class="alloc-q">You are facing an important decision at work. Distribute 10 points across the factors below based on how much each one actually drives your decision-making.</p>
+        <p class="alloc-note">Allocations must total exactly 10 to proceed.</p>
+        <div class="alloc-items" id="m3r1-items">
+          <div class="alloc-item"><div class="alloc-label">Having enough data and analysis to feel confident</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">My gut read based on experience</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">Input from people I trust</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">The speed at which I need to move</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">Being able to reverse the decision if I'm wrong</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+        </div>
+        <div class="alloc-bar" id="m3r1-bar"><span class="alloc-bar-label">Points remaining</span><span class="alloc-bar-num" id="m3r1-rem">10<span class="alloc-bar-sub">/ 10</span></span></div>
+        <div class="sc-nav"><button class="btn btn-primary" id="m3r1-next" disabled>Next Round</button></div>
+      </div>
+
+      <div id="m3r2" class="sc-card hidden">
+        <div class="sc-eyebrow"><div class="sc-badge">Round 2 of 6</div><div class="sc-title">How You Feel Most Valued at Work</div></div>
+        <div class="sc-rule"></div>
+        <p class="alloc-q">Distribute 10 points across these based on what genuinely makes you feel recognized and appreciated at work.</p>
+        <p class="alloc-note">Allocations must total exactly 10 to proceed.</p>
+        <div class="alloc-items" id="m3r2-items">
+          <div class="alloc-item"><div class="alloc-label">Being told specifically what you did well and why it mattered</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">Having someone's full, undivided attention in a conversation</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">A colleague stepping in to take something off your plate without being asked</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">A formal acknowledgment, bonus, gift, or public recognition</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">Being handed ownership of something and trusted to run with it</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+        </div>
+        <div class="alloc-bar" id="m3r2-bar"><span class="alloc-bar-label">Points remaining</span><span class="alloc-bar-num" id="m3r2-rem">10<span class="alloc-bar-sub">/ 10</span></span></div>
+        <div class="sc-nav"><button class="btn btn-primary" id="m3r2-next" disabled>Next Round</button></div>
+      </div>
+
+      <div id="m3r3" class="sc-card hidden">
+        <div class="sc-eyebrow"><div class="sc-badge">Round 3 of 6</div><div class="sc-title">What You Need From Others</div></div>
+        <div class="sc-rule"></div>
+        <p class="alloc-q">Distribute 10 points across these based on how much each one actually matters to you to do your best work.</p>
+        <p class="alloc-note">Allocations must total exactly 10 to proceed.</p>
+        <div class="alloc-items" id="m3r3-items">
+          <div class="alloc-item"><div class="alloc-label">Clear direction and expectations from above</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">Room to shape the work myself</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">People around me who challenge my thinking</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">Strong relationships and trust on the team</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">Recognition when the work is good</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+        </div>
+        <div class="alloc-bar" id="m3r3-bar"><span class="alloc-bar-label">Points remaining</span><span class="alloc-bar-num" id="m3r3-rem">10<span class="alloc-bar-sub">/ 10</span></span></div>
+        <div class="sc-nav"><button class="btn btn-primary" id="m3r3-next" disabled>Next Round</button></div>
+      </div>
+
+      <div id="m3r4" class="sc-card hidden">
+        <div class="sc-eyebrow"><div class="sc-badge">Round 4 of 6</div><div class="sc-title">How You Handle Conflict</div></div>
+        <div class="sc-rule"></div>
+        <p class="alloc-q">When a genuine disagreement arises at work, distribute 10 points based on how you actually tend to respond.</p>
+        <p class="alloc-note">Allocations must total exactly 10 to proceed.</p>
+        <div class="alloc-items" id="m3r4-items">
+          <div class="alloc-item"><div class="alloc-label">Name it directly, even if it creates tension</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">Work through it privately with the other person first</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">Build a coalition before surfacing it</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">Raise it with a decision-maker if it can't be resolved at peer level</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">Let it pass if the stakes aren't high enough to justify the friction</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+        </div>
+        <div class="alloc-bar" id="m3r4-bar"><span class="alloc-bar-label">Points remaining</span><span class="alloc-bar-num" id="m3r4-rem">10<span class="alloc-bar-sub">/ 10</span></span></div>
+        <div class="sc-nav"><button class="btn btn-primary" id="m3r4-next" disabled>Next Round</button></div>
+      </div>
+
+      <div id="m3r5" class="sc-card hidden">
+        <div class="sc-eyebrow"><div class="sc-badge">Round 5 of 6</div><div class="sc-title">What Motivates You</div></div>
+        <div class="sc-rule"></div>
+        <p class="alloc-q">Over the course of your career, distribute 10 points across the motivators below based on what has actually driven you.</p>
+        <p class="alloc-note">Allocations must total exactly 10 to proceed.</p>
+        <div class="alloc-items" id="m3r5-items">
+          <div class="alloc-item"><div class="alloc-label">Financial reward</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">Building something I'm proud of</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">Recognition from people I respect</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">Solving hard problems</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">Developing people around me</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+        </div>
+        <div class="alloc-bar" id="m3r5-bar"><span class="alloc-bar-label">Points remaining</span><span class="alloc-bar-num" id="m3r5-rem">10<span class="alloc-bar-sub">/ 10</span></span></div>
+        <div class="sc-nav"><button class="btn btn-primary" id="m3r5-next" disabled>Next Round</button></div>
+      </div>
+
+      <div id="m3r6" class="sc-card hidden">
+        <div class="sc-eyebrow"><div class="sc-badge">Round 6 of 6</div><div class="sc-title">Where You Are Hardest on Yourself</div></div>
+        <div class="sc-rule"></div>
+        <p class="alloc-q">Distribute 10 points across these areas based on where your own internal standards are highest.</p>
+        <p class="alloc-note">Allocations must total exactly 10 to proceed.</p>
+        <div class="alloc-items" id="m3r6-items">
+          <div class="alloc-item"><div class="alloc-label">The quality of my thinking and analysis</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">How I communicate and whether people understand me</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">Whether I delivered what I committed to</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">Whether I was fair and honest in how I handled people</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+          <div class="alloc-item"><div class="alloc-label">Whether I had the courage to say the difficult thing</div><div class="alloc-ctrl"><button class="alloc-btn alloc-dec" type="button">−</button><div class="alloc-val">0</div><button class="alloc-btn alloc-inc" type="button">+</button></div></div>
+        </div>
+        <div class="alloc-bar" id="m3r6-bar"><span class="alloc-bar-label">Points remaining</span><span class="alloc-bar-num" id="m3r6-rem">10<span class="alloc-bar-sub">/ 10</span></span></div>
+        <div class="sc-nav"><button class="btn btn-primary" id="m3r6-next" disabled>Submit Module 3</button></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODULE 4: BEHAVIORAL PAIRS -->
+<div id="screen-module4" class="screen">
+  <div class="content-wrap">
+    <div id="m4-intro" class="mod-intro">
+      <div class="mod-eyebrow">Module 4 of 4</div>
+      <div class="mod-title">Behavioral<br>Pairs</div>
+      <p class="mod-desc">Thirty-five pairs of statements. For each pair, select the statement that more accurately describes how you actually behave — not how a leader should behave. All 35 pairs are on one page. You cannot submit until all are answered.</p>
+      <div class="mod-stats">
+        <div class="stat-chip"><strong>35</strong>Pairs</div>
+        <div class="stat-chip"><strong>~10</strong>minutes</div>
+      </div>
+      <button class="btn btn-primary" id="begin-m4-btn">Begin Module 4</button>
+    </div>
+    <div id="m4-pairs-wrap" class="hidden">
+      <p class="pairs-header">For each pair, select the statement that more accurately describes how you actually behave.</p>
+      <div class="pairs-list" id="m4-pairs-list"></div>
+    </div>
+  </div>
+</div>
+
+<div id="screen-thankyou" class="screen">
+  <div class="entry-card" style="text-align:center;max-width:480px;">
+    <div class="ty-check"></div>
+    <div class="entry-eyebrow" style="justify-content:center;">Fulton Asset Management</div>
+    <div class="ty-title" id="ty-name">Thank you.</div>
+    <p class="ty-body">Your responses have been submitted successfully.<br>You may now close this window.</p>
+  </div>
+</div>
+
+</div>
+
+<div id="m5-footer" class="hidden">
+  <div class="pairs-foot-inner">
+    <div class="pairs-prog"><strong id="m5-count">0</strong> of 25 pairs answered<span id="m5-hint"> — scroll to complete all pairs</span></div>
+    <button class="btn btn-primary" id="m5-submit-btn" disabled>Submit Assessment</button>
+  </div>
+</div>
+
+<div id="pairs-footer" class="hidden">
+  <div class="pairs-foot-inner">
+    <div class="pairs-prog"><strong id="pairs-count">0</strong> of 35 pairs answered<span id="pairs-hint"> — scroll to complete all pairs</span></div>
+    <button class="btn btn-primary" id="pairs-submit-btn" disabled>Submit Assessment</button>
+  </div>
+</div>
+
+<script>
+var M1_PAIRS=[
+  ["After a long day of back-to-back meetings, I feel energized","After a long day of back-to-back meetings, I feel drained and need time alone to recover"],
+  ["I think best out loud, in conversation with others","I think best alone, before I enter the conversation"],
+  ["I prefer to process new information by talking through it","I prefer to process new information by reflecting on it first, then responding"],
+  ["At a work social event, I'm usually one of the last to leave","At a work social event, I'm usually ready to go before most people"],
+  ["I get energy from being around my team throughout the day","I get energy from blocks of uninterrupted time alone to focus"],
+  ["In a brainstorm, I tend to generate ideas by riffing off others in the moment","In a brainstorm, I tend to arrive with ideas already formed"],
+  ["I'm comfortable being put on the spot in a meeting","I do my best thinking when I've had time to prepare before speaking"],
+  ["A packed calendar with lots of interaction feels productive to me","A clear calendar with deep work blocks feels productive to me"],
+  ["When solving a hard problem, my first instinct is to call someone","When solving a hard problem, my first instinct is to work through it myself first"],
+  ["People describe me as someone who gets energy from the room","People describe me as someone who brings calm and steadiness to the room"]
+];
+
+var M4_PAIRS=[
+  ["I have made a significant decision with less information than I wanted and been right","I have waited longer than others wanted before committing to a decision, and it was the right call"],
+  ["When I look back at my best decisions, most were made fast","When I look back at my best decisions, most involved careful analysis before acting"],
+  ["I get more decisive under pressure","I get more deliberate under pressure"],
+  ["I have reversed a major decision I made — and I am at peace with that","Once I have committed to a direction, I typically see it through regardless of friction"],
+  ["In most meetings, I speak more than I listen","In most meetings, I listen more than I speak"],
+  ["I have given feedback someone didn't want to hear and I don't regret how I said it","I have softened feedback more than I should have, in hindsight"],
+  ["People come to me for the bottom line","People come to me for the full context"],
+  ["I tend to write more than I talk when something important needs to be communicated","I tend to talk more than I write when something important needs to be communicated"],
+  ["I have disagreed with someone above me and said so directly, in the moment","I have disagreed with someone above me and found a more diplomatic way to work with or around it"],
+  ["I have gone above or around someone in the hierarchy when I believed it was necessary","I work through proper channels even when I think the process is wrong"],
+  ["I believe people in senior roles have usually earned them","I am skeptical of authority that hasn't been demonstrated in practice"],
+  ["My output quality holds up under high pressure","My output quality drops when I'm stretched too thin"],
+  ["I have told someone above me about a problem before I had a solution","I wait until I can bring both the problem and a plan before surfacing it"],
+  ["After a significant setback, I am usually back to full effectiveness within a few days","Significant setbacks take real time to process before I move forward fully"],
+  ["I am at my best when I am building something new","I am at my best when I am running something well"],
+  ["My best contribution to a team is usually analytical — I see things others miss in the data","My best contribution to a team is usually relational — I build trust and alignment others can't"],
+  ["I am better at starting things than finishing them","I am better at finishing things than starting them"],
+  ["I do my best work independently","I do my best work in collaboration with others"],
+  ["I have been told I move too fast without enough consultation","I have been told I take too long to decide or act"],
+  ["I have been told I am too blunt or direct","I have been told I am not direct enough when it matters"],
+  ["I have over-committed to something I couldn't deliver","I have under-committed to avoid the risk of failing"],
+  ["When there's open conflict on a team, I am usually the one who names it","When there's open conflict on a team, I usually try to resolve it quietly off to the side"],
+  ["I work best when I own a problem end to end","I work best when I share accountability with people I trust"],
+  ["I have pushed hard for a decision I believed in after others pushed back","I have adapted my position when others pushed back, even when I wasn't fully convinced"],
+  ["I find it easy to give critical feedback to someone I manage","I find critical feedback conversations genuinely difficult"],
+  ["Financial outcome is a primary driver of my career decisions","Building something I am proud of matters more to me than the financial outcome"],
+  ["I care more about being respected by my team than being liked by them","I care more about being liked by my team than being respected by them"],
+  ["I have taken a role for less money because of what I could build or learn","I have always weighted compensation heavily in career decisions"],
+  ["Long-term impact matters more to me than near-term results","Near-term results are what I focus on — the long-term takes care of itself"],
+  ["I am motivated by problems that don't have clear answers","I am motivated by executing well on problems that are clearly defined"],
+  ["Under sustained pressure, I tend to become more controlling and directive","Under sustained pressure, I tend to withdraw and go quieter than usual"],
+  ["I know from experience that I can be hard to read when I'm stressed","I know from experience that my stress is usually visible to people around me"],
+  ["When I'm comfortable and things are going well, I sometimes take on too much","When I'm comfortable and things are going well, I sometimes get bored and disengage"],
+  ["The way I show appreciation at work is primarily through words and praise","The way I show appreciation at work is primarily through actions — getting things done for people"],
+  ["People who know me well would say my default mode is energized by people","People who know me well would say my default mode is energized by solitude and focus"]
+];
+
+var M2_TITLES=['The Misaligned Decision','The Underperformer You Inherited','The Unrealistic Deadline','The Trust Breach','The Two Paths','The Bad Quarter','The Competing Colleague','The Inherited Crisis'];
+var M3_TITLES=['How You Make Decisions','How You Feel Most Valued at Work','What You Need From Others','How You Handle Conflict','What Motivates You','Where You Are Hardest on Yourself'];
+var M3_ITEMS=[
+  ['Having enough data and analysis to feel confident','My gut read based on experience','Input from people I trust','The speed at which I need to move','Being able to reverse the decision if I\'m wrong'],
+  ['Being told specifically what you did well and why it mattered','Having someone\'s full, undivided attention in a conversation','A colleague stepping in to take something off your plate without being asked','A formal acknowledgment, bonus, gift, or public recognition','Being handed ownership of something and trusted to run with it'],
+  ['Clear direction and expectations from above','Room to shape the work myself','People around me who challenge my thinking','Strong relationships and trust on the team','Recognition when the work is good'],
+  ['Name it directly, even if it creates tension','Work through it privately with the other person first','Build a coalition before surfacing it','Raise it with a decision-maker if it can\'t be resolved at peer level','Let it pass if the stakes aren\'t high enough to justify the friction'],
+  ['Financial reward','Building something I\'m proud of','Recognition from people I respect','Solving hard problems','Developing people around me'],
+  ['The quality of my thinking and analysis','How I communicate and whether people understand me','Whether I delivered what I committed to','Whether I was fair and honest in how I handled people','Whether I had the courage to say the difficult thing']
+];
+
+var M5_PAIRS=[
+  // DOMINANCE (pairs 1-5): drive to assert, control outcomes, compete, win
+  ["When I disagree with a decision, I push back until I either change it or fully understand why it stands",
+   "When I disagree with a decision, I voice my view once clearly and then commit to the direction"],
+  ["I am energized by situations where I am competing — against others, against a target, against the clock",
+   "I am energized by situations where I am building consensus and bringing people along"],
+  ["I would rather make a call that turns out to be wrong than have no one making a call at all",
+   "I would rather slow down and align the group than move fast and risk leaving people behind"],
+  ["When I walk into a room, I naturally gravitate toward shaping the direction of what happens",
+   "When I walk into a room, I naturally gravitate toward understanding the dynamics before contributing"],
+  ["I find it easier to ask forgiveness than permission when I believe something needs to happen",
+   "I find it easier to build alignment first, even if it slows things down"],
+
+  // PATIENCE (pairs 6-10): urgency, pace, tolerance for change and repetition
+  ["I feel most alive when I am juggling multiple things and the pace is high",
+   "I feel most alive when I can go deep on one thing and see it through completely"],
+  ["Routine and repetition make me restless — I need variety to stay engaged",
+   "Routine and repetition give me a stable foundation from which I do my best work"],
+  ["I make decisions and move quickly, even if it means revisiting them later",
+   "I take the time I need to make a decision well the first time, even if others want faster"],
+  ["I get frustrated when processes slow things down that could move faster",
+   "I get frustrated when people move so fast that quality and care are sacrificed"],
+  ["I am at my best when the environment is changing and I have to adapt constantly",
+   "I am at my best when the environment is stable enough that I can execute with depth and precision"],
+
+  // FORMALITY (pairs 11-15): need for rules, structure, precision, correctness
+  ["I prefer to understand the rules so I can work within them confidently",
+   "I prefer to understand the outcome so I can find my own path to get there"],
+  ["Getting things right matters more to me than getting things done fast",
+   "Getting things done matters more to me than getting every detail exactly right"],
+  ["When I take on a new responsibility, I want to understand the expectations and standards clearly before I begin",
+   "When I take on a new responsibility, I prefer to start moving and calibrate as I go"],
+  ["I am uncomfortable when guidelines are vague or when people are making things up as they go",
+   "I am comfortable operating in ambiguity — I trust myself to figure it out"],
+  ["I hold myself and others to high standards of accuracy and quality, even on things that seem minor",
+   "I focus my precision where it truly matters and let the rest be good enough"],
+
+  // RISK APPETITE (pairs 16-20): tolerance for uncertainty, downside, and asymmetric bets
+  ["I am drawn to opportunities where the upside is significant even if the probability of failure is real",
+   "I am drawn to opportunities where the outcome is more certain, even if the upside is more modest"],
+  ["I make my best decisions when the stakes are high and the situation is uncertain",
+   "I make my best decisions when I have enough information to assess the downside clearly"],
+  ["I have made a significant bet — financially, professionally, or personally — that most people in my position would not have made",
+   "I tend to make moves that are bold in direction but careful in execution — I do not gamble"],
+  ["When evaluating a new opportunity, I find myself drawn first to what could go right",
+   "When evaluating a new opportunity, I find myself drawn first to what could go wrong"],
+  ["I am comfortable making irreversible decisions when I believe in the direction, even without full information",
+   "I prefer to preserve optionality for as long as possible before committing to an irreversible path"],
+
+  // THINKING STYLE (pairs 21-25): concrete/sequential vs. abstract/conceptual processing
+  ["I think in patterns and frameworks — I am most useful when I can see the system behind the problem",
+   "I think in specifics and examples — I am most useful when I can ground a problem in what is actually happening"],
+  ["I am more comfortable with a rough map of the whole territory than a detailed map of one corner of it",
+   "I am more comfortable knowing one area deeply than having a broad but shallow view of everything"],
+  ["When someone presents a problem, I naturally look for the underlying principle that, if solved, would make other problems easier",
+   "When someone presents a problem, I naturally look for the most practical path to resolving this specific situation"],
+  ["I find abstract discussions energizing — I like exploring ideas before knowing whether they are actionable",
+   "I find abstract discussions draining unless they connect quickly to something concrete and actionable"],
+  ["I tend to think several moves ahead and anchor my decisions to a long-term thesis",
+   "I tend to anchor my decisions to what is true and knowable right now, and adjust as things develop"]
+];
+
+var M5_LABELS=[
+  'Pushes back hard vs. voices once and commits','Energized by competition vs. consensus','Makes call vs. waits for alignment',
+  'Shapes room direction vs. reads dynamics first','Forgiveness vs. permission',
+  'Energized by high pace vs. going deep','Routine restless vs. stable foundation','Decides fast vs. decides well',
+  'Frustrated by slow process vs. fast sloppiness','Best in change vs. best in stability',
+  'Understands rules to work within vs. outcome to find own path','Right vs. done','Wants clear expectations vs. starts and calibrates',
+  'Uncomfortable with vague vs. comfortable in ambiguity','High standards everywhere vs. precision where it matters',
+  'Drawn to high upside/risk vs. certain/modest','Best in high stakes/uncertain vs. clear downside info',
+  'Has made big unconventional bet vs. bold direction careful execution','Drawn to upside first vs. downside first',
+  'Comfortable irreversible vs. preserves optionality',
+  'Patterns and frameworks vs. specifics and examples','Rough whole map vs. one area deeply',
+  'Underlying principle vs. practical path','Abstract energizing vs. draining without concrete','Thinks ahead/thesis vs. anchors to now'
+];
+
+var FORMSPREE='https://formspree.io/f/maqaqezj';
+
+var state={
+  name:'',org:'',role:'',startTime:null,
+  m1:Array(10).fill(null),
+  m2:Array(8).fill(null),
+  m3:[[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]],
+  m4:Array(35).fill(null),
+  m5:Array(25).fill(null)
+};
+
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  document.getElementById('screen-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function setMod(txt){document.getElementById('module-indicator').textContent=txt;}
+
+
+// CEO/BOARD SCENARIO SET
+var CEO_SCENARIOS=[
+  {
+    title:"The Misaligned Board Commitment",
+    framing:"Your board chair has just committed the company to a new strategic direction in a meeting with a major investor — without consulting you. You believe the direction is wrong and will create significant operational problems. The chair is enthusiastic and the investor is excited. You have 24 hours before the commitment is formalized.",
+    opts:["Pull the chair aside immediately and lay out your concerns directly, even if it creates friction","Let it play out for now — you might be missing context — and raise concerns privately once you have thought it through","Start building the implementation plan while simultaneously documenting your reservations in writing to the board","Request a meeting with the chair and the investor together to surface the issues before anything is finalized"]
+  },
+  {
+    title:"The Underperformer You Inherited",
+    framing:"You have inherited a long-tenured senior leader who is universally liked but consistently underdelivering. Everyone knows it. The previous CEO never addressed it. The person is not malicious — they are simply in the wrong role or past their peak. You have been in the role for 90 days.",
+    opts:["Have a direct performance conversation now — lay out expectations and a 60-day improvement plan","Spend another 30 days building relationship and gathering data before taking any action","Restructure the role to better fit what they can actually do, and have a conversation about the new scope","Begin a quiet process of managing them out — the pattern is too established to change"]
+  },
+  {
+    title:"The Unrealistic Board Deadline",
+    framing:"Your board has set a deadline for a major company milestone that cannot be met at the quality level expected. You have three weeks. Doing it right would take six. You can either cut scope, cut quality, push back on the deadline, or find a way to resource up fast.",
+    opts:["Push back on the board directly — explain what is actually achievable and propose a revised timeline","Deliver something at the deadline, even if it is not complete — demonstrate responsiveness and fix it in round two","Identify the 60% of the work that delivers 90% of the value and propose that as the deliverable","Find external resources immediately — contractors, consultants — and absorb the cost to hit the date"]
+  },
+  {
+    title:"The Trust Breach",
+    framing:"A board member you respect has shared something with you in confidence about a senior team member. You later learn that the information was inaccurate — and that the board member may have shared it to position themselves politically. The affected team member does not know.",
+    opts:["Confront the board member directly — make clear that you know the information was wrong and this cannot happen again","Say nothing to either party — board politics are a reality and engaging makes it worse","Go to the affected team member privately and let them know there is a narrative about them that is not accurate","Raise it with the board chair — this is the kind of behavior that damages organizational trust at a systemic level"]
+  },
+  {
+    title:"The Two Paths",
+    framing:"You are considering two strategic directions for the company. Path A gives the company more autonomy, a bigger market scope, and a genuine chance to build something differentiated — but higher execution risk and less investor support. Path B is backed by investors, well-resourced, and virtually guaranteed to succeed — but you will be executing a vision largely shaped by the board with limited room to differentiate.",
+    opts:["Path A — the differentiated, higher-risk opportunity","Path B — a well-backed execution play, done exceptionally well, is its own form of leadership","Ask for more time to assess both before committing","Negotiate a version of Path A with more board support before committing"]
+  },
+  {
+    title:"The Bad Quarter",
+    framing:"Results for the quarter are significantly below plan. Your team executed well — the miss was primarily driven by market conditions outside anyone's control. You are preparing the quarterly board update. Your board chair wants to lead with market context and minimize the performance narrative. You disagree with that framing.",
+    opts:["Present the data cleanly and lead with performance — the board can read market context themselves","Lead with market context as the chair wants, but ensure the performance data is clearly presented and not obscured","Have a direct conversation with the chair before the meeting — push for a more balanced framing","Let the chair lead the narrative and add the performance context yourself during the Q and A"]
+  },
+  {
+    title:"The Competing Executive",
+    framing:"A peer CEO in your investor's portfolio is clearly being positioned as a candidate for a larger opportunity your investor controls. They are politically savvy, well-liked, and good at what they do. You believe you are more qualified — but they have more visibility with the key decision-makers. You have six months before the decision.",
+    opts:["Focus entirely on delivering exceptional results and trust that performance speaks for itself","Invest in building your relationship with the key decision-makers — visibility matters as much as performance","Find ways to collaborate with the peer CEO directly — turn a competitor into an ally","Have an honest conversation with your investor about your interest and your qualifications"]
+  },
+  {
+    title:"The Inherited Crisis",
+    framing:"You are three months into your CEO role. You have discovered a significant operational problem that predates your arrival — one that your board is not aware of and that will require significant resources and difficult decisions to fix. Your predecessor may have known about it.",
+    opts:["Surface it to the board immediately, even before you have a full picture or a solution","Spend two more weeks fully understanding the problem before bringing it forward","Bring it forward simultaneously with a concrete remediation plan","Fix as much as you can quietly before surfacing it — minimize the blast radius"]
+  }
+];
+
+function injectScenarios(scenarios){
+  var titles=['The Misaligned Board Commitment','The Underperformer You Inherited','The Unrealistic Board Deadline','The Trust Breach','The Two Paths','The Bad Quarter','The Competing Executive','The Inherited Crisis'];
+  // Update M2_TITLES for report
+  for(var i=0;i<titles.length;i++) M2_TITLES[i]=titles[i];
+  // Update scenario cards in DOM
+  scenarios.forEach(function(sc,i){
+    var n=i+1;
+    var card=document.getElementById('m2s'+n);
+    if(!card) return;
+    card.querySelector('.sc-title').textContent=sc.title;
+    card.querySelector('.sc-framing').textContent=sc.framing;
+    var opts=card.querySelectorAll('.mc-opt .mc-text');
+    sc.opts.forEach(function(txt,oi){if(opts[oi]) opts[oi].textContent=txt;});
+  });
+}
+
+// ENTRY
+(function(){
+  var n=document.getElementById('p-name'),o=document.getElementById('p-org'),b=document.getElementById('begin-btn');
+  function chk(){b.disabled=n.value.trim().length<2||o.value.trim().length<1||!state.role;}
+  n.addEventListener('input',chk); o.addEventListener('input',chk);
+  document.getElementById('role-options').addEventListener('click',function(e){
+    var opt=e.target.closest('.role-opt'); if(!opt) return;
+    document.querySelectorAll('.role-opt').forEach(function(r){r.classList.remove('selected');});
+    opt.classList.add('selected');
+    state.role=opt.dataset.role;
+    chk();
+  });
+  b.addEventListener('click',function(){
+    state.name=n.value.trim(); state.org=o.value.trim(); state.startTime=Date.now();
+    // Inject CEO scenarios if applicable
+    if(state.role==='ceo'||state.role==='board') injectScenarios(CEO_SCENARIOS);
+    document.getElementById('app-header').classList.remove('hidden');
+    document.getElementById('main').classList.add('has-header');
+    showModIntro(1);
+  });
+})();
+
+function showModIntro(n){
+  if(n===1){showScreen('module1');setMod('Module 1 of 5');document.getElementById('m1-intro').classList.remove('hidden');document.getElementById('m1-pairs-wrap').classList.add('hidden');}
+  else if(n===2){showScreen('module2');setMod('Module 2 of 5');document.getElementById('m2-intro').classList.remove('hidden');document.getElementById('m2-scenarios').classList.add('hidden');}
+  else if(n===3){showScreen('module3');setMod('Module 3 of 5');document.getElementById('m3-intro').classList.remove('hidden');document.getElementById('m3-rounds').classList.add('hidden');}
+  else if(n===4){showScreen('module4');setMod('Module 4 of 5');document.getElementById('m4-intro').classList.remove('hidden');document.getElementById('m4-pairs-wrap').classList.add('hidden');document.getElementById('pairs-footer').classList.add('hidden');}
+  else if(n===5){showScreen('module5');setMod('Module 5 of 5');document.getElementById('m5-intro').classList.remove('hidden');document.getElementById('m5-pairs-wrap').classList.add('hidden');document.getElementById('m5-footer').classList.add('hidden');}
+  window.scrollTo(0,0);
+}
+
+// MODULE 1
+document.getElementById('begin-m1-btn').addEventListener('click',function(){
+  document.getElementById('m1-intro').classList.add('hidden');
+  buildPairs('m1-pairs-list', M1_PAIRS, state.m1, updateM1Progress);
+  document.getElementById('m1-pairs-wrap').classList.remove('hidden');
+  window.scrollTo(0,0);
+});
+
+function updateM1Progress(){
+  var done=state.m1.filter(function(a){return a!==null;}).length;
+  document.getElementById('m1-continue-btn').disabled=done<10;
+}
+
+document.getElementById('m1-continue-btn').addEventListener('click',function(){
+  if(state.m1.filter(function(a){return a!==null;}).length<10) return;
+  showModIntro(2);
+});
+
+// MODULE 2
+document.getElementById('begin-m2-btn').addEventListener('click',function(){
+  document.getElementById('m2-intro').classList.add('hidden');
+  document.getElementById('m2-scenarios').classList.remove('hidden');
+  showM2(1);
+});
+
+function showM2(n){
+  for(var i=1;i<=8;i++) document.getElementById('m2s'+i).classList.add('hidden');
+  document.getElementById('m2s'+n).classList.remove('hidden');
+  window.scrollTo(0,0);
+}
+
+document.getElementById('m2-scenarios').addEventListener('click',function(e){
+  var opt=e.target.closest('.mc-opt'); if(!opt) return;
+  var sn=parseInt(opt.dataset.s),ch=opt.dataset.c;
+  if(state.m2[sn-1]!==null) return;
+  state.m2[sn-1]=ch;
+  document.querySelectorAll('#m2s'+sn+'-opts .mc-opt').forEach(function(o){
+    o.classList.add('locked');
+    if(o.dataset.c===ch) o.classList.add('selected');
+  });
+  document.getElementById('m2s'+sn+'-next').disabled=false;
+});
+
+for(var _i=1;_i<=7;_i++){(function(idx){document.getElementById('m2s'+idx+'-next').addEventListener('click',function(){if(state.m2[idx-1]!==null)showM2(idx+1);});}(_i));}
+document.getElementById('m2s8-next').addEventListener('click',function(){if(state.m2[7]!==null)showModIntro(3);});
+
+// MODULE 3
+document.getElementById('begin-m3-btn').addEventListener('click',function(){
+  document.getElementById('m3-intro').classList.add('hidden');
+  document.getElementById('m3-rounds').classList.remove('hidden');
+  showM3(1);
+});
+
+function showM3(n){
+  for(var i=1;i<=6;i++) document.getElementById('m3r'+i).classList.add('hidden');
+  document.getElementById('m3r'+n).classList.remove('hidden');
+  window.scrollTo(0,0);
+}
+
+function initAlloc(rn){
+  var container=document.getElementById('m3r'+rn+'-items');
+  var vals=container.querySelectorAll('.alloc-val');
+  var remEl=document.getElementById('m3r'+rn+'-rem');
+  var bar=document.getElementById('m3r'+rn+'-bar');
+  var btn=document.getElementById('m3r'+rn+'-next');
+  function getSum(){var s=0;vals.forEach(function(v){s+=parseInt(v.textContent)||0;});return s;}
+  function refresh(){
+    var sum=getSum(),rem=10-sum;
+    vals.forEach(function(v,i){state.m3[rn-1][i]=parseInt(v.textContent)||0;});
+    if(sum===10){bar.className='alloc-bar valid';remEl.innerHTML='0<span class="alloc-bar-sub">/ 10</span>';btn.disabled=false;}
+    else if(sum>10){bar.className='alloc-bar over';remEl.innerHTML=rem+'<span class="alloc-bar-sub">/ 10</span>';btn.disabled=true;}
+    else{bar.className='alloc-bar';remEl.innerHTML=rem+'<span class="alloc-bar-sub">/ 10</span>';btn.disabled=true;}
+  }
+  container.querySelectorAll('.alloc-item').forEach(function(item){
+    var dec=item.querySelector('.alloc-dec'),inc=item.querySelector('.alloc-inc'),val=item.querySelector('.alloc-val');
+    dec.addEventListener('click',function(){var v=parseInt(val.textContent)||0;if(v>0){val.textContent=v-1;refresh();}});
+    inc.addEventListener('click',function(){var v=parseInt(val.textContent)||0;if(getSum()<10){val.textContent=v+1;refresh();}});
+  });
+  refresh();
+}
+for(var _r=1;_r<=6;_r++) initAlloc(_r);
+for(var _j=1;_j<=5;_j++){(function(rn){document.getElementById('m3r'+rn+'-next').addEventListener('click',function(){if(!this.disabled)showM3(rn+1);});}(_j));}
+document.getElementById('m3r6-next').addEventListener('click',function(){if(!this.disabled)showModIntro(4);});
+
+// MODULE 4
+document.getElementById('begin-m4-btn').addEventListener('click',function(){
+  document.getElementById('m4-intro').classList.add('hidden');
+  buildPairs('m4-pairs-list', M4_PAIRS, state.m4, updateM4Progress);
+  document.getElementById('m4-pairs-wrap').classList.remove('hidden');
+  document.getElementById('pairs-footer').classList.remove('hidden');
+  updateM4Progress();
+  window.scrollTo(0,0);
+});
+
+function updateM4Progress(){
+  var done=state.m4.filter(function(a){return a!==null;}).length;
+  document.getElementById('pairs-count').textContent=done;
+  document.getElementById('pairs-submit-btn').disabled=done<35;
+  document.getElementById('pairs-hint').style.display=done>=35?'none':'';
+}
+
+document.getElementById('pairs-submit-btn').addEventListener('click',function(){
+  if(this.disabled) return;
+  showModIntro(5);
+});
+
+
+// MODULE 5
+document.getElementById('begin-m5-btn').addEventListener('click',function(){
+  document.getElementById('m5-intro').classList.add('hidden');
+  buildPairs('m5-pairs-list', M5_PAIRS, state.m5, updateM5Progress);
+  document.getElementById('m5-pairs-wrap').classList.remove('hidden');
+  document.getElementById('m5-footer').classList.remove('hidden');
+  updateM5Progress();
+  window.scrollTo(0,0);
+});
+
+function updateM5Progress(){
+  var done=state.m5.filter(function(a){return a!==null;}).length;
+  document.getElementById('m5-count').textContent=done;
+  document.getElementById('m5-submit-btn').disabled=done<25;
+  document.getElementById('m5-hint').style.display=done>=25?'none':'';
+}
+
+document.getElementById('m5-submit-btn').addEventListener('click',function(){
+  if(this.disabled) return;
+  submit();
+});
+
+// REUSABLE PAIR BUILDER
+function buildPairs(listId, pairs, stateArr, onChange){
+  var list=document.getElementById(listId);
+  list.innerHTML='';
+  pairs.forEach(function(pair,idx){
+    var item=document.createElement('div');
+    item.className='pair-item'; item.id=listId+'-p'+idx;
+    item.innerHTML='<div class="pair-num">'+(idx+1)+'</div><div class="pair-sides"><div class="pair-side" data-idx="'+idx+'" data-choice="A"><div class="pair-side-lbl">A <div class="pair-check"></div></div><div class="pair-text">'+esc(pair[0])+'</div></div><div class="pair-side" data-idx="'+idx+'" data-choice="B"><div class="pair-side-lbl">B <div class="pair-check"></div></div><div class="pair-text">'+esc(pair[1])+'</div></div></div>';
+    list.appendChild(item);
+  });
+  list.addEventListener('click',function(e){
+    var side=e.target.closest('.pair-side'); if(!side) return;
+    var idx=parseInt(side.dataset.idx),ch=side.dataset.choice;
+    stateArr[idx]=ch;
+    var pEl=document.getElementById(listId+'-p'+idx);
+    pEl.classList.add('answered');
+    pEl.querySelectorAll('.pair-side').forEach(function(s){s.classList.toggle('selected',s.dataset.choice===ch);});
+    if(onChange) onChange();
+  });
+}
+
+// SUBMISSION
+function elapsed(){
+  var ms=Date.now()-(state.startTime||Date.now());
+  var m=Math.floor(ms/60000),s=Math.floor((ms%60000)/1000);
+  return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+
+function buildReport(){
+  var SEP='='.repeat(60),lines=[];
+  var ts=new Date().toLocaleString('en-US',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',timeZoneName:'short'});
+  lines.push(SEP,'FULTON ASSET MANAGEMENT -- LEADERSHIP ASSESSMENT',SEP);
+  lines.push('Participant:  '+state.name);
+  lines.push('Organization: '+state.org);
+  lines.push('Role context: '+({'leader':'Team/Function Leader','ceo':'CEO/President/GM','board':'Board/Advisor','ic':'Individual Contributor'}[state.role]||'Not specified'));
+  lines.push('Submitted:    '+ts);
+  lines.push('Elapsed:      '+elapsed());
+  lines.push('');
+
+  lines.push(SEP,'MODULE 1 -- ENERGY & STYLE (10 pairs)',SEP);
+  lines.push('[A responses = extrovert-leaning signals. B responses = introvert-leaning signals.]');
+  lines.push('');
+  var m1Labels=['Energy from meetings vs alone time','Thinks out loud vs thinks alone','Processes by talking vs reflecting','Stays late at events vs leaves early','Energized by team vs solo focus','Generates ideas live vs arrives prepared','Comfortable on spot vs needs prep','Values packed calendar vs deep work','First calls someone vs works alone first','Gets energy from room vs brings calm'];
+  state.m1.forEach(function(ans,i){
+    lines.push((i+1)+'. ['+m1Labels[i]+'] → ['+(ans||'?')+'] '+(ans==='A'?M1_PAIRS[i][0]:ans==='B'?M1_PAIRS[i][1]:'(not answered)'));
+  });
+  var aCount=state.m1.filter(function(a){return a==='A';}).length;
+  var bCount=state.m1.filter(function(a){return a==='B';}).length;
+  lines.push('');
+  lines.push('ENERGY SUMMARY: '+aCount+'/10 A (extrovert signals), '+bCount+'/10 B (introvert signals)');
+  lines.push(aCount>=8?'>> STRONG EXTROVERT SIGNAL':aCount>=6?'>> MODERATE EXTROVERT LEAN':bCount>=8?'>> STRONG INTROVERT SIGNAL':bCount>=6?'>> MODERATE INTROVERT LEAN':'>> AMBIVERT / CONTEXT-DEPENDENT');
+  lines.push('');
+
+  lines.push(SEP,'MODULE 2 -- SITUATIONAL DILEMMAS',SEP);
+  state.m2.forEach(function(ans,i){
+    lines.push('Scenario '+(i+1)+' ('+M2_TITLES[i]+'): '+(ans||'(not answered)'));
+  });
+  lines.push('');
+
+  lines.push(SEP,'MODULE 3 -- FORCED ALLOCATION',SEP);
+  lines.push('[10 points per round. ALL 10 = absolute priority signal. Even spread = no dominant preference. Zero = actively deprioritized.]');
+  lines.push('');
+  state.m3.forEach(function(round,ri){
+    lines.push('Round '+(ri+1)+': '+M3_TITLES[ri]);
+    if(ri===1){lines.push('  [APPRECIATION LANGUAGE MAPPING: "Being told specifically what you did well" = Words of Affirmation | "Full undivided attention in a conversation" = Quality Time | "Colleague takes something off your plate" = Acts of Service | "Formal acknowledgment/bonus/gift" = Tangible Recognition | "Handed ownership and trusted to run with it" = Autonomy & Trust]');}
+    var maxPts=Math.max.apply(null,round);
+    round.forEach(function(pts,ii){
+      var flag=pts===10?' [ALL 10 — MAXIMUM SIGNAL]':pts>=8?' [STRONG CONCENTRATION]':pts>=6?' [HIGH WEIGHT]':pts===0?' [ZERO — DEPRIORITIZED]':'';
+      lines.push('  '+M3_ITEMS[ri][ii]+': '+pts+flag);
+    });
+    if(maxPts===10){var ti=round.indexOf(10);lines.push('  >> ALL 10 on "'+M3_ITEMS[ri][ti]+'" — absolute priority. Do not average this away.');}
+    else if(maxPts>=7){var ti=round.indexOf(maxPts);lines.push('  >> Strong lean ('+maxPts+'/10) toward "'+M3_ITEMS[ri][ti]+'".');}
+    else{lines.push('  >> Points spread evenly — no dominant preference in this round.');}
+    lines.push('');
+  });
+
+  lines.push(SEP,'MODULE 4 -- BEHAVIORAL PAIRS (35 pairs)',SEP);
+  lines.push('Raw: '+state.m4.map(function(a,i){return (i+1)+':'+(a||'?');}).join(' '));
+  lines.push('');
+  var m4Labels=['Decision with limited info','Best decisions fast vs careful','Decisive vs deliberate under pressure','Reverses vs commits through','Speaks vs listens in meetings','Direct feedback vs softens','Bottom line vs full context','Writes vs talks','Disagrees directly vs diplomatically','Bypasses vs works through channels','Trusts vs skeptical of authority','Output holds vs drops under pressure','Surfaces problems vs waits for plan','Recovers fast vs needs time','Builder vs operator','Analytical vs relational contributor','Starts vs finishes things','Independent vs collaborative work','Told too fast vs too slow','Told too blunt vs not direct enough','Over-commits vs under-commits','Names conflict vs resolves quietly','Owns end-to-end vs shares accountability','Pushes decision vs adapts to pushback','Gives critical feedback easily vs hard','Financial vs pride-in-work motivation','Respected vs liked','Takes less for growth vs weights comp','Long-term vs near-term focus','Ambiguity vs defined execution motivated','Stress: controlling vs withdrawing','Stress: hard to read vs visible','Comfort: overloads vs disengages','Appreciation: words vs actions','Default mode: people vs solitude energized'];
+  state.m4.forEach(function(ans,i){
+    lines.push((i+1)+'. ['+m4Labels[i]+'] → ['+(ans||'?')+'] '+(ans==='A'?M4_PAIRS[i][0]:ans==='B'?M4_PAIRS[i][1]:'(not answered)'));
+  });
+  lines.push(SEP,'MODULE 5 -- DRIVES & STYLE (25 pairs)',SEP);
+  lines.push('[5 dimensions: Dominance (pairs 1-5), Patience/Urgency (pairs 6-10), Formality (pairs 11-15), Risk Appetite (pairs 16-20), Thinking Style (pairs 21-25)]');
+  lines.push('[A = first statement, B = second statement. For each dimension, count A vs B responses.]');
+  lines.push('');
+
+  var dimNames=['DOMINANCE','DOMINANCE','DOMINANCE','DOMINANCE','DOMINANCE',
+                'PATIENCE/URGENCY','PATIENCE/URGENCY','PATIENCE/URGENCY','PATIENCE/URGENCY','PATIENCE/URGENCY',
+                'FORMALITY','FORMALITY','FORMALITY','FORMALITY','FORMALITY',
+                'RISK APPETITE','RISK APPETITE','RISK APPETITE','RISK APPETITE','RISK APPETITE',
+                'THINKING STYLE','THINKING STYLE','THINKING STYLE','THINKING STYLE','THINKING STYLE'];
+
+  state.m5.forEach(function(ans,i){
+    lines.push((i+1)+'. ['+dimNames[i]+' | '+M5_LABELS[i]+'] → ['+(ans||'?')+'] '+(ans==='A'?M5_PAIRS[i][0]:ans==='B'?M5_PAIRS[i][1]:'(not answered)'));
+  });
+
+  // Dimension summaries
+  lines.push('');
+  lines.push('DIMENSION SUMMARIES:');
+  var dims=['DOMINANCE','PATIENCE/URGENCY','FORMALITY','RISK APPETITE','THINKING STYLE'];
+  var dimKeys=['Assertive/competitive (A) vs. collaborative/deferring (B)',
+               'High urgency/variety (A) vs. deliberate/stable (B)',
+               'Rules/precision-oriented (A) vs. outcome/ambiguity-comfortable (B)',
+               'High risk appetite (A) vs. risk-aware/conservative (B)',
+               'Abstract/conceptual (A) vs. concrete/sequential (B)'];
+  for(var d=0;d<5;d++){
+    var aCount=0,bCount=0;
+    for(var p=0;p<5;p++){var ans=state.m5[d*5+p];if(ans==='A')aCount++;else if(ans==='B')bCount++;}
+    var lean=aCount>=4?'STRONG A':aCount===3?'MODERATE A':bCount>=4?'STRONG B':bCount===3?'MODERATE B':'BALANCED';
+    lines.push(dims[d]+': '+aCount+'A / '+bCount+'B → '+lean+' ('+dimKeys[d]+')');
+  }
+
+  lines.push('',SEP);
+  return lines.join('\n');
+}
+
+function submit(){
+  document.getElementById('pairs-footer').classList.add('hidden');
+  document.getElementById('app-header').classList.add('hidden');
+  document.getElementById('main').classList.remove('has-header');
+  var ts=new Date().toLocaleString('en-US',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',timeZoneName:'short'});
+  fetch(FORMSPREE,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({
+      participant:state.name,
+      organization:state.org,
+      submitted_at:ts,
+      elapsed:elapsed(),
+      module1_energy:state.m1.map(function(a,i){return (i+1)+':'+(a||'?');}).join(' '),
+      module2_dilemmas:state.m2.map(function(a,i){return 'S'+(i+1)+':'+(a||'?');}).join(' '),
+      module3_allocation:state.m3.map(function(r,i){return 'R'+(i+1)+':['+r.join(',')+']';}).join(' '),
+      module4_pairs:state.m4.map(function(a,i){return (i+1)+':'+(a||'?');}).join(' '),
+      module5_drives:state.m5.map(function(a,i){return (i+1)+':'+(a||'?');}).join(' '),
+      report:buildReport()
+    })
+  }).catch(function(){});
+  var el=document.getElementById('ty-name');
+  if(el) el.textContent='Thank you, '+state.name+'.';
+  showScreen('thankyou');
+}
+</script>
+</body>
+</html>
